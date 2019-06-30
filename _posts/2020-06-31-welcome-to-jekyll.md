@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[JavaScirpt] 클로저(Closure)"
-date:   2019-06-30 16:49:18 +0900
+date:   2020-06-30 16:49:18 +0900
 categories: jekyll update
 ---
 
