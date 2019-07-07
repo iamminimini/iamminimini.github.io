@@ -1,80 +1,63 @@
 ---
 layout: post
-title:  "[JavaScirpt] 호이스팅(Hoisting)"
-date:   2019-06-30 16:49:18 +0900
+title:  "[JavaScirpt] 클로저(Closure)"
+date:   2019-06-31 16:49:18 +0900
 categories: jekyll update
 ---
 
-# 호이스팅(Hoisting)
- 호이스트(hoist)의 사전적 의미는 `끌어올리다.` 혹은  `들어올리다` 이며,    
- JavaScript에서 호이스팅이란 코드에 사용된 **변수나 함수들의 최상위로 끌어올리는 것**을 의미한다.
- 단 선언 부분만 위로 끌어올려지는 것이고 대입하는 부분은 그대로 남겨져 있다.
+ - 로컬 변수를 참조하고 있는 함수 내의 함수
+ - 즉, 자신의 범위 밖에 있는 변수들에 접근할 수 있는 함수를 의미한다.
+ - inner function을 return 할때 closure가 된다.
 
- 함수 내에서 선언한 함수 범위 (local scope)의 변수는 해당 함수 최상위로
- 함수 밖에서 선언한 전역 범위(global scope)의 변수는 해당 스크립트의 최상위로 끌여올려진다. 
+https://lalwr.blogspot.com/2016/01/javascript-closure.html
+
+# 클로저(Closure)
+
+함수 밖에서 선언된 변수를 함수 내부에서 사용할 때 클로저 발생한다.     
+일반적으로 함수가 종료되면 메모리에서 소멸하기 때문에 function을 재호출해도 변수에 할당했던 값은 소멸하여 호출이 불가하게 됩니다.    
+하지만  **클로저는 이러한 외부 변수와 같은 환경 자체를 통째로 기억하는 공간을 형성합니다**  
+
 
 {% highlight java %}
-function Name()
-{  
-  console.log("First Name :" + name);  
-  var name = "Lee";  
-  console.log("Last Name :"+ name);  
-}
-
-Name();
-
-// First Name : undefined  
-// Last Name : Lee  
-
-{% endhighlight %}
-다른 프로그래밍 언어의 경우라면 name이 선언되지 않았는데 사용하려고 하기 때문에 에러를 발생시킨다.
-하지만 JavaScirpt는 호이스팅 통해 변수 name의 선언을 가장 먼저 해주기 때문에 에러 없이 동작한다.
-
-{% highlight java %}
-function Name()
-{  
-  var name;  // name 변수는 호이스팅된다. 할당은 이후에 발생한다.
-  console.log("First Name :" + name);  
-  var name = "Lee";  // <- 이때 name에 값이 할당
-  console.log("Last Name :"+ name);  
-}
-
-Name();
-
-// First Name : undefined  
-// Last Name : Lee  
-
-{% endhighlight %}
-
-
-호이스트 되었을 때 함수와 변수의 이름이 같다면 함수 선언은 변수 선언을 덮어씌운다.
-
-{% highlight java %}
-
-var Name;  // <- 변수 선언
+var global_name = "테스트";
 
 function Name()
 {  
-  console.log("my name is hong");
+    var outer_name = "홍길동";
+
+    function printName(){
+        var inner_name = "김병장";
+
+        console.log(global_name);
+        console.log(outer_name);
+        console.log(inner_name);
+        
+    }
+
+    return printName;
+
+    -- 출력 -- 
+    // 테스트
+    // 홍길동
+    // 김병장
 }
 
-console.log("typeof :" + typeof myName);      // typeof : function   
+var print = Name();
+
+print();
 
 {% endhighlight %}
 
+Name() 함수를 반환 하여 var print 변수에 저장합니다. 
+print 변수에 저장한 것이 함수이므로 print도 함수입니다. 
+그러므로 print()로 실행할 수 있습니다.
+
+`` var print = Name(); `` 로 반환받은 것이 클로저 입니다.   
+Name() 함수 내에서 정의된 지역 변수인 outer_name이 자신의 수명이 끝나는 Name()을 호출 후에 print(); 호출에도 살아 있다는 것입니다.
 
 
-하지만 변수에 값이 할당되었을 경우는 변수 선언이 함수 선언을 덮어 쓰게 된다.
 
-{% highlight java %}
+- Closure는 function 안에 function이 있게 되면 기본적으로 생성된다.
+- Closure는 scope chain이 생성됐을 때의 변수 값들을 보존하고 기억하게 된다.
+- 함수가 메모리에서 없어질 때까지 따라다니게 된다.
 
-var Name; = "hong"; 
-
-function Name()
-{  
-  console.log("my name is hong");
-}
-
-console.log("typeof :" + typeof myName);      // typeof : String   
-
-{% endhighlight %}
