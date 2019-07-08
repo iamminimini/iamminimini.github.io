@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "[javaScriptScirpt] 이벤트 전달 방식"
+title:  "[javaScript] 이벤트 전달 방식"
 date:   2019-07-07 12:49:18 +0900
 categories: jekyll update
 ---

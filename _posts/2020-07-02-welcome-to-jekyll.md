@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "[Jekyll] Jekyll Themes 적용 방법 "
-date:   2019-07-01 10:49:18 +0900
+date:   2019-07-02 10:49:18 +0900
 categories: jekyll update
 ---
 
